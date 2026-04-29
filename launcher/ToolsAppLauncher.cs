@@ -14,11 +14,11 @@ namespace ToolsAppLauncher
         private static int Main()
         {
             string root = AppDomain.CurrentDomain.BaseDirectory;
-            string indexPath = Path.Combine(root, "index.html");
+            string indexPath = Path.Combine(root, "desktop.html");
 
             if (!File.Exists(indexPath))
             {
-                ShowError("index.html wurde nicht gefunden.\n\nBitte die EXE im entpackten Projektordner neben index.html starten.");
+                ShowError("desktop.html wurde nicht gefunden.\n\nBitte die EXE im entpackten Projektordner neben desktop.html starten.");
                 return 1;
             }
 

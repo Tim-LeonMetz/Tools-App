@@ -9,7 +9,7 @@ Wenn du das Projekt als `.zip` von GitHub herunterlaedst:
 1. `.zip` entpacken
 2. `Tools-App.exe` doppelklicken
 
-Die EXE startet keinen lokalen Webserver. Sie oeffnet die App als eigenes Desktop-Fenster ueber Microsoft Edge im App-Modus, direkt aus den entpackten Dateien.
+Die EXE startet keinen lokalen Webserver. Sie oeffnet `desktop.html` als eigenes Desktop-Fenster ueber Microsoft Edge im App-Modus, direkt aus den entpackten Dateien.
 
 ## Als Webserver starten
 
@@ -22,6 +22,15 @@ Danach im Browser:
 ```text
 http://localhost:8080
 ```
+
+Der Webserver liefert zwei unterschiedliche Oberflaechen aus:
+
+```text
+http://localhost:8080/desktop
+http://localhost:8080/mobile
+```
+
+Wenn du nur `http://localhost:8080` oeffnest, waehlt der Server anhand des Geraets automatisch Desktop oder Smartphone.
 
 Auf dem Raspberry Pi im Tailscale-Netz:
 
@@ -55,8 +64,13 @@ sudo systemctl enable --now school-tools
 
 ## Struktur
 
-- `index.html`: Einstiegspunkt
-- `styles.css`: Liquid-Glass-inspirierte Oberflaeche
+- `index.html`: Verteiler fuer statisches Oeffnen ohne Server
+- `desktop.html`: Desktop-App-Seite
+- `mobile.html`: Smartphone-App-Seite
+- `styles.css`: Grundlayout und Tool-Oberflaechen
+- `liquid.css`: Liquid-Glass-inspirierte Materialschicht
+- `desktop.css`: Desktop-spezifische Navigation und Layouts
+- `mobile.css`: Smartphone-spezifische App-Schale
 - `app.js`: Routing, Tools, Mathematikparser und lokale Karteikarten
 - `serve.py`: kleiner Webserver mit SPA-Fallback
 - `Tools-App.exe`: Windows-Launcher fuer Desktop-Start aus dem entpackten GitHub-Zip

@@ -80,6 +80,9 @@ const SUBJECT_TOOLS = {
   default: ["lernkarten"],
 };
 
+const APP_VARIANT = window.SCHOOL_TOOLS_VARIANT || document.body.dataset.variant || "desktop";
+const IS_PHONE = APP_VARIANT === "phone";
+
 const UNIT_GROUPS = {
   length: {
     label: "Laenge",
@@ -189,6 +192,11 @@ function routeTo(path) {
   return `#/${path}`;
 }
 
+function variantHref(variant) {
+  const file = variant === "phone" ? "mobile.html" : "desktop.html";
+  return `${file}${window.location.hash || "#/"}`;
+}
+
 function formatNumber(value, digits = 5) {
   if (!Number.isFinite(value)) return "nicht definiert";
   const clean = Math.abs(value) < 1e-10 ? 0 : value;
@@ -230,6 +238,8 @@ function saveCards(subjectId, cards) {
 function render() {
   const route = state.route;
   const content = renderCurrentPage(route);
+  document.body.classList.toggle("is-phone", IS_PHONE);
+  document.body.classList.toggle("is-desktop", !IS_PHONE);
   document.documentElement.style.setProperty("--accent", currentSubject(route).color);
   document.documentElement.style.setProperty("--accent-2", currentSubject(route).color2);
   document.getElementById("app").innerHTML = renderShell(content, route);
@@ -242,6 +252,8 @@ function currentSubject(route) {
 }
 
 function renderShell(content, route) {
+  if (IS_PHONE) return renderPhoneShell(content, route);
+  return renderDesktopShell(content, route);
   return `
     <div class="app-shell">
       <aside class="sidebar">
@@ -274,6 +286,68 @@ function renderShell(content, route) {
   `;
 }
 
+function renderDesktopShell(content, route) {
+  return `
+    <div class="app-shell desktop-shell">
+      <aside class="sidebar liquid-layer">
+        <a class="brand" href="${routeTo("")}">
+          <span class="brand-mark">${svg("spark")}</span>
+          <span>
+            <h1>School Tools</h1>
+            <p>Desktop &middot; Tailscale</p>
+          </span>
+        </a>
+        <nav class="nav-group" aria-label="Faecher">
+          ${SUBJECTS.map((subject) => renderNavLink(subject, route)).join("")}
+        </nav>
+      </aside>
+      <main class="main">
+        <header class="topbar liquid-layer">
+          <div class="breadcrumbs">${renderBreadcrumbs(route)}</div>
+          <div class="top-actions">
+            <label class="search">
+              ${svg("search", "button-icon")}
+              <input id="globalSearch" type="search" autocomplete="off" placeholder="Fach oder Tool suchen" value="${escapeHtml(state.search)}">
+            </label>
+            <a class="icon-button" href="${routeTo("")}" title="Start">${svg("home", "button-icon")}</a>
+            <a class="icon-button" href="${variantHref("phone")}" title="Smartphone-Seite">${svg("right", "button-icon")}</a>
+          </div>
+        </header>
+        <div class="fade-in">${content}</div>
+      </main>
+    </div>
+  `;
+}
+
+function renderPhoneShell(content, route) {
+  const subject = currentSubject(route);
+  return `
+    <div class="phone-shell">
+      <header class="phone-topbar liquid-layer">
+        <a class="phone-brand" href="${routeTo("")}" aria-label="Start">
+          <span class="brand-mark">${svg("spark")}</span>
+          <span>
+            <strong>Tools-App</strong>
+            <small>${escapeHtml(route.page === "home" ? "Faecher" : subject.name)}</small>
+          </span>
+        </a>
+        <a class="icon-button" href="${variantHref("desktop")}" title="Desktop-Seite">${svg("right", "button-icon")}</a>
+      </header>
+      <div class="phone-search-row">
+        <label class="search liquid-layer">
+          ${svg("search", "button-icon")}
+          <input id="globalSearch" type="search" autocomplete="off" placeholder="Suchen" value="${escapeHtml(state.search)}">
+        </label>
+      </div>
+      ${renderPhoneSubjectDock(route)}
+      <main class="phone-main">
+        <div class="fade-in">${content}</div>
+      </main>
+      ${renderPhoneTabbar(route)}
+    </div>
+  `;
+}
+
 function renderNavLink(subject, route) {
   const active = route.subjectId === subject.id ? " is-active" : "";
   return `
@@ -282,6 +356,31 @@ function renderNavLink(subject, route) {
       <span>${escapeHtml(subject.name)}</span>
       <span class="nav-dot"></span>
     </a>
+  `;
+}
+
+function renderPhoneSubjectDock(route) {
+  return `
+    <nav class="phone-subject-dock liquid-layer" aria-label="Faecher">
+      ${SUBJECTS.map((subject) => `
+        <a href="${routeTo(`fach/${subject.id}`)}" class="${route.subjectId === subject.id ? "is-active" : ""}" style="--subject-color: ${subject.color}">
+          ${svg(subject.icon, "button-icon")}
+          <span>${escapeHtml(subject.name)}</span>
+        </a>
+      `).join("")}
+    </nav>
+  `;
+}
+
+function renderPhoneTabbar(route) {
+  const cardSubject = route.subjectId || "mathematik";
+  return `
+    <nav class="phone-tabbar liquid-layer" aria-label="Schnellnavigation">
+      <a href="${routeTo("")}" class="${route.page === "home" ? "is-active" : ""}">${svg("home", "button-icon")}<span>Start</span></a>
+      <a href="${routeTo("fach/mathematik")}" class="${route.subjectId === "mathematik" && route.page !== "tool" ? "is-active" : ""}">${svg("function", "button-icon")}<span>Mathe</span></a>
+      <a href="${routeTo(`fach/${cardSubject}/tool/lernkarten`)}" class="${route.toolId === "lernkarten" ? "is-active" : ""}">${svg("cards", "button-icon")}<span>Karten</span></a>
+      <a href="${variantHref("desktop")}">${svg("right", "button-icon")}<span>Desktop</span></a>
+    </nav>
   `;
 }
 

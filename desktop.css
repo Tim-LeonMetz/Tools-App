@@ -1,0 +1,61 @@
+body[data-variant="desktop"] .app-shell {
+  grid-template-columns: 306px minmax(0, 1fr);
+  gap: 0;
+  padding: 16px 18px 24px 16px;
+}
+
+body[data-variant="desktop"] .sidebar {
+  top: 16px;
+  height: calc(100vh - 32px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+}
+
+body[data-variant="desktop"] .main {
+  padding: 0 0 30px 22px;
+}
+
+body[data-variant="desktop"] .topbar {
+  top: 16px;
+  min-height: 64px;
+  margin: 0 0 22px;
+  padding: 10px 12px 10px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+}
+
+body[data-variant="desktop"] .search {
+  width: min(390px, 36vw);
+}
+
+body[data-variant="desktop"] .hero {
+  min-height: 310px;
+  padding: 36px;
+}
+
+body[data-variant="desktop"] .hero h2 {
+  max-width: 14ch;
+}
+
+body[data-variant="desktop"] .subject-grid {
+  grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+}
+
+body[data-variant="desktop"] .tool-grid {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+body[data-variant="desktop"] .glass-card {
+  min-height: 205px;
+}
+
+body[data-variant="desktop"] .tool-layout {
+  grid-template-columns: minmax(330px, 0.86fr) minmax(460px, 1.44fr);
+}
+
+body[data-variant="desktop"] .phone-shell,
+body[data-variant="desktop"] .phone-topbar,
+body[data-variant="desktop"] .phone-subject-dock,
+body[data-variant="desktop"] .phone-tabbar {
+  display: none;
+}
