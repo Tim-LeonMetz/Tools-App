@@ -1715,3 +1715,88 @@ function drawPointSet(ctx, points, xToPx, yToPx, color) {
   });
   ctx.restore();
 }
+
+function renderDesktopShell(content, route) {
+  const subject = currentSubject(route);
+  return `
+    <div class="desktop-page">
+      <header class="apple-nav">
+        <a class="subject-logo" href="${routeTo("")}" style="--subject-color: ${subject.color}" aria-label="Start">
+          ${route.subjectId ? svg(subject.icon, "subject-logo-icon") : "<span>Tools</span>"}
+        </a>
+        <nav class="apple-nav-links" aria-label="Faecher">
+          ${SUBJECTS.map((item) => renderDesktopSubjectLink(item, route)).join("")}
+        </nav>
+        <div class="apple-nav-actions">
+          <label class="search">
+            <input id="globalSearch" type="search" autocomplete="off" placeholder="Suchen" value="${escapeHtml(state.search)}">
+          </label>
+          <a class="plain-link" href="${variantHref("phone")}">Mobile</a>
+        </div>
+      </header>
+      <main class="main apple-main">
+        <div class="fade-in">${content}</div>
+      </main>
+    </div>
+  `;
+}
+
+function renderDesktopSubjectLink(subject, route) {
+  return `
+    <a class="${route.subjectId === subject.id ? "is-active" : ""}" href="${routeTo(`fach/${subject.id}`)}" style="--subject-color: ${subject.color}">
+      ${escapeHtml(subject.name)}
+    </a>
+  `;
+}
+
+function renderPhoneShell(content, route) {
+  const subject = currentSubject(route);
+  return `
+    <div class="phone-shell">
+      <header class="phone-topbar">
+        <a class="phone-brand" href="${routeTo("")}" aria-label="Start">
+          <span class="brand-mark" style="--subject-color: ${subject.color}">${route.subjectId ? svg(subject.icon, "subject-logo-icon") : "Tools"}</span>
+          <span>
+            <strong>Tools-App</strong>
+            <small>${escapeHtml(route.page === "home" ? "Faecher" : subject.name)}</small>
+          </span>
+        </a>
+        <a class="plain-link" href="${variantHref("desktop")}">Desktop</a>
+      </header>
+      <div class="phone-search-row">
+        <label class="search">
+          <input id="globalSearch" type="search" autocomplete="off" placeholder="Suchen" value="${escapeHtml(state.search)}">
+        </label>
+      </div>
+      ${renderPhoneSubjectDock(route)}
+      <main class="phone-main">
+        <div class="fade-in">${content}</div>
+      </main>
+      ${renderPhoneTabbar(route)}
+    </div>
+  `;
+}
+
+function renderPhoneSubjectDock(route) {
+  return `
+    <nav class="phone-subject-dock" aria-label="Faecher">
+      ${SUBJECTS.map((subject) => `
+        <a href="${routeTo(`fach/${subject.id}`)}" class="${route.subjectId === subject.id ? "is-active" : ""}" style="--subject-color: ${subject.color}">
+          <span>${escapeHtml(subject.name)}</span>
+        </a>
+      `).join("")}
+    </nav>
+  `;
+}
+
+function renderPhoneTabbar(route) {
+  const cardSubject = route.subjectId || "mathematik";
+  return `
+    <nav class="phone-tabbar" aria-label="Schnellnavigation">
+      <a href="${routeTo("")}" class="${route.page === "home" ? "is-active" : ""}"><span>Start</span></a>
+      <a href="${routeTo("fach/mathematik")}" class="${route.subjectId === "mathematik" && route.page !== "tool" ? "is-active" : ""}"><span>Mathe</span></a>
+      <a href="${routeTo(`fach/${cardSubject}/tool/lernkarten`)}" class="${route.toolId === "lernkarten" ? "is-active" : ""}"><span>Karten</span></a>
+      <a href="${variantHref("desktop")}"><span>Desktop</span></a>
+    </nav>
+  `;
+}

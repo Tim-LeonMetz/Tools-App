@@ -68,7 +68,7 @@ sudo systemctl enable --now school-tools
 - `desktop.html`: Desktop-App-Seite
 - `mobile.html`: Smartphone-App-Seite
 - `styles.css`: Grundlayout und Tool-Oberflaechen
-- `liquid.css`: Liquid-Glass-inspirierte Materialschicht
+- `liquid.css`: helle Apple-inspirierte Material- und Farbregeln
 - `desktop.css`: Desktop-spezifische Navigation und Layouts
 - `mobile.css`: Smartphone-spezifische App-Schale
 - `app.js`: Routing, Tools, Mathematikparser und lokale Karteikarten

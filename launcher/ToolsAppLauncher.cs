@@ -25,7 +25,7 @@ namespace ToolsAppLauncher
             try
             {
                 string edgePath = FindEdge();
-                string appUrl = new Uri(indexPath).AbsoluteUri;
+                string appUrl = new Uri(indexPath).AbsoluteUri + "#/";
 
                 if (!string.IsNullOrEmpty(edgePath))
                 {
@@ -40,7 +40,7 @@ namespace ToolsAppLauncher
                     ProcessStartInfo info = new ProcessStartInfo
                     {
                         FileName = edgePath,
-                        Arguments = "--app=\"" + appUrl + "\" --user-data-dir=\"" + profileDir + "\"",
+                        Arguments = "--app=\"" + appUrl + "\" --allow-file-access-from-files --user-data-dir=\"" + profileDir + "\"",
                         UseShellExecute = false,
                         WorkingDirectory = root
                     };

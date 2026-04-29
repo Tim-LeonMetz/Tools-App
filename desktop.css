@@ -1,61 +1,186 @@
-body[data-variant="desktop"] .app-shell {
-  grid-template-columns: 306px minmax(0, 1fr);
-  gap: 0;
-  padding: 16px 18px 24px 16px;
+body[data-variant="desktop"] {
+  min-width: 0;
 }
 
-body[data-variant="desktop"] .sidebar {
-  top: 16px;
-  height: calc(100vh - 32px);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 8px;
+body[data-variant="desktop"] .desktop-page {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
-body[data-variant="desktop"] .main {
-  padding: 0 0 30px 22px;
+body[data-variant="desktop"] .apple-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  align-items: center;
+  height: 44px;
+  padding: 0 max(22px, calc((100vw - 1040px) / 2));
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  background: rgba(251, 251, 253, 0.86);
+  backdrop-filter: saturate(180%) blur(18px);
 }
 
-body[data-variant="desktop"] .topbar {
-  top: 16px;
-  min-height: 64px;
-  margin: 0 0 22px;
-  padding: 10px 12px 10px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 8px;
+body[data-variant="desktop"] .subject-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  min-height: 42px;
+  color: #1d1d1f;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
-body[data-variant="desktop"] .search {
-  width: min(390px, 36vw);
+body[data-variant="desktop"] .apple-nav-links {
+  display: flex;
+  min-width: 0;
+  justify-content: center;
+  gap: clamp(14px, 2vw, 32px);
+  overflow: hidden;
+}
+
+body[data-variant="desktop"] .apple-nav-links a,
+body[data-variant="desktop"] .plain-link {
+  color: #1d1d1f;
+  font-size: 0.76rem;
+  line-height: 44px;
+  white-space: nowrap;
+  opacity: 0.86;
+}
+
+body[data-variant="desktop"] .apple-nav-links a:hover,
+body[data-variant="desktop"] .apple-nav-links a.is-active,
+body[data-variant="desktop"] .plain-link:hover {
+  color: #000000;
+  opacity: 1;
+}
+
+body[data-variant="desktop"] .apple-nav-links a.is-active {
+  font-weight: 700;
+}
+
+body[data-variant="desktop"] .apple-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+body[data-variant="desktop"] .apple-nav-actions .search {
+  width: 150px;
+}
+
+body[data-variant="desktop"] .apple-nav-actions .search input {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+}
+
+body[data-variant="desktop"] .apple-main {
+  max-width: none;
+  padding: 0;
 }
 
 body[data-variant="desktop"] .hero {
-  min-height: 310px;
-  padding: 36px;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  min-height: 560px;
+  padding: 72px 24px 54px;
+  text-align: center;
+}
+
+body[data-variant="desktop"] .hero-content {
+  max-width: 720px;
 }
 
 body[data-variant="desktop"] .hero h2 {
-  max-width: 14ch;
+  max-width: 100%;
+  font-size: clamp(3.2rem, 6vw, 5.4rem);
+  line-height: 0.96;
+  letter-spacing: 0;
+}
+
+body[data-variant="desktop"] .hero p {
+  max-width: 620px;
+  margin-right: auto;
+  margin-left: auto;
+  font-size: 1.4rem;
+  line-height: 1.25;
+}
+
+body[data-variant="desktop"] .hero-meta {
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  width: min(760px, 100%);
+  margin-top: 22px;
+}
+
+body[data-variant="desktop"] .section {
+  width: min(1180px, calc(100vw - 48px));
+  margin: 42px auto 0;
+}
+
+body[data-variant="desktop"] .section-header {
+  justify-content: center;
+  text-align: center;
+}
+
+body[data-variant="desktop"] .section-header h3 {
+  font-size: 2.2rem;
 }
 
 body[data-variant="desktop"] .subject-grid {
-  grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
 }
 
 body[data-variant="desktop"] .tool-grid {
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
 }
 
-body[data-variant="desktop"] .glass-card {
-  min-height: 205px;
+body[data-variant="desktop"] .subject-card,
+body[data-variant="desktop"] .tool-card {
+  min-height: 168px;
+  padding: 24px;
+}
+
+body[data-variant="desktop"] .card-copy h3,
+body[data-variant="desktop"] .card-copy h4 {
+  font-size: 1.45rem;
 }
 
 body[data-variant="desktop"] .tool-layout {
-  grid-template-columns: minmax(330px, 0.86fr) minmax(460px, 1.44fr);
+  width: min(1180px, calc(100vw - 48px));
+  grid-template-columns: minmax(320px, 0.82fr) minmax(440px, 1.34fr);
+  margin: 0 auto;
 }
 
+body[data-variant="desktop"] .single-layout {
+  width: min(960px, calc(100vw - 48px));
+  margin: 0 auto;
+}
+
+body[data-variant="desktop"] .sidebar,
+body[data-variant="desktop"] .topbar,
 body[data-variant="desktop"] .phone-shell,
 body[data-variant="desktop"] .phone-topbar,
 body[data-variant="desktop"] .phone-subject-dock,
-body[data-variant="desktop"] .phone-tabbar {
+body[data-variant="desktop"] .phone-tabbar,
+body[data-variant="desktop"] .mobile-tabs {
   display: none;
+}
+
+@media (max-width: 1120px) {
+  body[data-variant="desktop"] .apple-nav {
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    padding: 0 16px;
+  }
+
+  body[data-variant="desktop"] .apple-nav-links {
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
 }
